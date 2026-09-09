@@ -380,7 +380,7 @@ static void trackpoint_work_cb(struct k_work *work) {
 
         // X 轴最终上报时会取反，因此 dx < 0 表示光标向右移动。
         // 仅将向右移动的速度提高 20%，向左移动保持不变。
-        float x_direction_mult = (dx < 0) ? 1.5f : 1.0f;
+        float x_direction_mult = (dx < 0) ? 1.8f : 1.0f;
         float fx = dx * MOUSE_BASE_SPEED * tp_factor * exp_mult * slow_mult * x_direction_mult;
         float fy = dy * MOUSE_BASE_SPEED * tp_factor * exp_mult * slow_mult;
 
