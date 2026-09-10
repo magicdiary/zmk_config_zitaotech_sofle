@@ -58,33 +58,46 @@ config TRACKPOINT_MOUSE_SENS_STEP_PERCENT
     int "Mouse sensitivity step per LED brightness (Percentage, 1 = 0.01)"
     default 1
 
-config TRACKPOINT_MOUSE_FORCE_MAX
-    int "Force reading treated as full force for nonlinear gain"
-    default 40
+config TRACKPOINT_MOUSE_GAIN_BASE_PERCENT
+    int "Speed gain below the first gain threshold (Percentage, 60 = 0.6x)"
+    default 60
     help
-      TrackPoint force reading (abs of dx/dy) treated as full force.
-      Nonlinear speed gain saturates at this force.
+      Speed gain applied to light forces below
+      TRACKPOINT_MOUSE_GAIN_L1_FORCE.
 
-config TRACKPOINT_MOUSE_GAIN_MAX_PERCENT
-    int "Max nonlinear speed gain at full force (Percentage, 250 = 2.5x)"
-    default 250
-    help
-      Speed gain at and above TRACKPOINT_MOUSE_FORCE_MAX.
-      100 = disabled (linear).
+config TRACKPOINT_MOUSE_GAIN_L1_FORCE
+    int "First gain threshold force reading"
+    default 10
+config TRACKPOINT_MOUSE_GAIN_L1_PERCENT
+    int "Speed gain from the first threshold (Percentage, 80 = 0.8x)"
+    default 80
 
-config TRACKPOINT_MOUSE_GAIN_MID_FORCE
-    int "Force reading where mid-force gain is reached"
+config TRACKPOINT_MOUSE_GAIN_L2_FORCE
+    int "Second gain threshold force reading"
     default 25
-    help
-      TrackPoint force reading (abs of dx/dy) at which the mid-force
-      gain TRACKPOINT_MOUSE_GAIN_MID_PERCENT applies.
-
-config TRACKPOINT_MOUSE_GAIN_MID_PERCENT
-    int "Mid-force speed gain (Percentage, 150 = 1.5x)"
+config TRACKPOINT_MOUSE_GAIN_L2_PERCENT
+    int "Speed gain from the second threshold (Percentage, 150 = 1.5x)"
     default 150
-    help
-      Speed gain at TRACKPOINT_MOUSE_GAIN_MID_FORCE. Below it the gain
-      ramps linearly from 100%; between mid and full force it ramps
-      linearly up to TRACKPOINT_MOUSE_GAIN_MAX_PERCENT.
+
+config TRACKPOINT_MOUSE_GAIN_L3_FORCE
+    int "Third gain threshold force reading"
+    default 30
+config TRACKPOINT_MOUSE_GAIN_L3_PERCENT
+    int "Speed gain from the third threshold (Percentage, 183 = 1.83x)"
+    default 183
+
+config TRACKPOINT_MOUSE_GAIN_L4_FORCE
+    int "Fourth gain threshold force reading"
+    default 40
+config TRACKPOINT_MOUSE_GAIN_L4_PERCENT
+    int "Speed gain from the fourth threshold (Percentage, 250 = 2.5x)"
+    default 250
+
+config TRACKPOINT_MOUSE_GAIN_L5_FORCE
+    int "Fifth gain threshold force reading"
+    default 50
+config TRACKPOINT_MOUSE_GAIN_L5_PERCENT
+    int "Speed gain from the fifth threshold (Percentage, 300 = 3.0x)"
+    default 300
 
 endmenu
