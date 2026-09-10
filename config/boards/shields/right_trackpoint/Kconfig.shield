@@ -58,5 +58,24 @@ config TRACKPOINT_MOUSE_SENS_STEP_PERCENT
     int "Mouse sensitivity step per LED brightness (Percentage, 1 = 0.01)"
     default 1
 
+config TRACKPOINT_MOUSE_FORCE_MAX
+    int "Force reading treated as full force for nonlinear gain"
+    default 80
+    help
+      TrackPoint force reading (abs of dx/dy) treated as full force.
+      Nonlinear speed gain saturates at this force.
+
+config TRACKPOINT_MOUSE_GAIN_MAX_PERCENT
+    int "Max nonlinear speed gain at full force (Percentage, 300 = 3.0x)"
+    default 300
+    help
+      Speed gain multiplier at full force. 100 = disabled (linear).
+
+config TRACKPOINT_MOUSE_GAIN_EXPONENT
+    int "Nonlinear gain curve steepness exponent (1 = linear ramp, 2 = squared, 3 = cubic)"
+    default 2
+    help
+      Higher values keep light pushes closer to linear and ramp up
+      more aggressively near full force.
 
 endmenu

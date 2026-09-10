@@ -66,6 +66,11 @@ static struct k_work_q tp_workq;
 #define MOUSE_SENS_BASE (CONFIG_TRACKPOINT_MOUSE_SENS_BASE_PERCENT / 100.0f)
 #define MOUSE_SENS_STEP (CONFIG_TRACKPOINT_MOUSE_SENS_STEP_PERCENT / 100.0f)
 
+// --- 小红点力度→速度非线性增益配置 ---
+#define MOUSE_FORCE_MAX CONFIG_TRACKPOINT_MOUSE_FORCE_MAX
+#define MOUSE_GAIN_MAX (CONFIG_TRACKPOINT_MOUSE_GAIN_MAX_PERCENT / 100.0f)
+#define MOUSE_GAIN_EXP CONFIG_TRACKPOINT_MOUSE_GAIN_EXPONENT
+
 /* ========= Motion GPIO ========= */
 
 #define MOTION_GPIO_NODE DT_NODELABEL(gpio0)
@@ -169,6 +174,17 @@ static inline float trackpoint_exponential_factor(int8_t dx, int8_t dy, uint32_t
     return (mult > TP_MAX_MULT) ? TP_MAX_MULT : mult;
 }
 #endif
+
+/* ========= 力度→速度非线性增益 ========= */
+/* 轻推时增益≈1（保持原线性手感），满力时增益=MOUSE_GAIN_MAX，受力越大速度越快 */
+static inline float trackpoint_force_gain(float force) {
+    float t = force / (float)MOUSE_FORCE_MAX;
+    if (t < 0.0f)
+        t = 0.0f;
+    if (t > 1.0f)
+        t = 1.0f;
+    return 1.0f + (MOUSE_GAIN_MAX - 1.0f) * powf(t, MOUSE_GAIN_EXP);
+}
 
 /* ========= 读取数据 ========= */
 static int trackpoint_read_packet(const struct device *dev, int8_t *dx, int8_t *dy) {
@@ -379,11 +395,17 @@ static void trackpoint_work_cb(struct k_work *work) {
         float slow_mult = slow_key_pressed ? SLOW_KEY_MULTIPLIER : 1.0f;
 
         // X 轴最终上报时会取反，因此 dx < 0 表示光标向右移动。
-        // 仅将向右移动的速度提高 20%，向左移动保持不变。
-        float x_direction_mult = (dx < 0) ? 1.8f : 1.0f;
-        float y_direction_mult = 1.5;
-        float fx = dx * MOUSE_BASE_SPEED * tp_factor * exp_mult * slow_mult * x_direction_mult;
-        float fy = dy * MOUSE_BASE_SPEED * tp_factor * exp_mult * slow_mult * y_direction_mult;
+        // 方向补偿（x_direction_mult / y_direction_mult）必须在非线性曲线之前
+        // 作用于输入力度，这样左右速度差异在整个力度范围内都被均衡。
+        float cx = (float)dx * ((dx < 0) ? 1.8f : 1.0f);
+        float cy = (float)dy * 1.5f;
+
+        // 力度非线性增益：受力越大，速度增益越大（轻推≈1，满力=MOUSE_GAIN_MAX）
+        float gain_x = trackpoint_force_gain(fabsf(cx));
+        float gain_y = trackpoint_force_gain(fabsf(cy));
+
+        float fx = cx * MOUSE_BASE_SPEED * tp_factor * exp_mult * slow_mult * gain_x;
+        float fy = cy * MOUSE_BASE_SPEED * tp_factor * exp_mult * slow_mult * gain_y;
 
         input_report_rel(dev, INPUT_REL_X, -(int)fx, false, K_NO_WAIT);
         input_report_rel(dev, INPUT_REL_Y, -(int)fy, true, K_NO_WAIT);
