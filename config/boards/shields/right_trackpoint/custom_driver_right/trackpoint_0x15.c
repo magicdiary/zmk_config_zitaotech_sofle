@@ -68,8 +68,9 @@ static struct k_work_q tp_workq;
 
 // --- 小红点力度→速度非线性增益配置 ---
 #define MOUSE_FORCE_MAX CONFIG_TRACKPOINT_MOUSE_FORCE_MAX
+#define MOUSE_GAIN_MID_FORCE CONFIG_TRACKPOINT_MOUSE_GAIN_MID_FORCE
+#define MOUSE_GAIN_MID (CONFIG_TRACKPOINT_MOUSE_GAIN_MID_PERCENT / 100.0f)
 #define MOUSE_GAIN_MAX (CONFIG_TRACKPOINT_MOUSE_GAIN_MAX_PERCENT / 100.0f)
-#define MOUSE_GAIN_EXP CONFIG_TRACKPOINT_MOUSE_GAIN_EXPONENT
 
 /* ========= Motion GPIO ========= */
 
@@ -175,15 +176,17 @@ static inline float trackpoint_exponential_factor(int8_t dx, int8_t dy, uint32_t
 }
 #endif
 
-/* ========= 力度→速度非线性增益 ========= */
-/* 轻推时增益≈1（保持原线性手感），满力时增益=MOUSE_GAIN_MAX，受力越大速度越快 */
+/* ========= 力度→速度非线性增益（分段线性） ========= */
+/* 轻推≈1 → MID_FORCE 处=MID_GAIN → FORCE_MAX 及以上=GAIN_MAX，受力越大速度越快 */
 static inline float trackpoint_force_gain(float force) {
-    float t = force / (float)MOUSE_FORCE_MAX;
-    if (t < 0.0f)
-        t = 0.0f;
-    if (t > 1.0f)
-        t = 1.0f;
-    return 1.0f + (MOUSE_GAIN_MAX - 1.0f) * powf(t, MOUSE_GAIN_EXP);
+    if (force >= (float)MOUSE_FORCE_MAX) {
+        return MOUSE_GAIN_MAX;
+    }
+    if (force >= (float)MOUSE_GAIN_MID_FORCE) {
+        return MOUSE_GAIN_MID + (MOUSE_GAIN_MAX - MOUSE_GAIN_MID) * (force - MOUSE_GAIN_MID_FORCE) /
+                                     (float)(MOUSE_FORCE_MAX - MOUSE_GAIN_MID_FORCE);
+    }
+    return 1.0f + (MOUSE_GAIN_MID - 1.0f) * (force / (float)MOUSE_GAIN_MID_FORCE);
 }
 
 /* ========= 读取数据 ========= */
