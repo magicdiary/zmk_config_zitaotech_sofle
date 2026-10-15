@@ -9,7 +9,7 @@
 #include "zitaotech_sofle.dtsi"
 #include <zephyr/dt-bindings/input/input-event-codes.h>
 
-#define MOUSE_LAYER_ID 3
+#define MOUSE_LAYER_ID 1
 
 
 / {
@@ -184,7 +184,7 @@
 &trackpoint_listener {
     status = "okay";
     input-processors =
-        <&zip_temp_layer 3 600>,
+        <&zip_temp_layer 1 600>,
         <&ip_behaviors0>,
         <&ip_behaviors1>,
         <&ip_behaviors2>,

@@ -51,6 +51,10 @@ static struct k_work_q tp_workq;
 #define SCROLL_DIVISOR_SLOW CONFIG_TRACKPOINT_SCROLL_DIVISOR_SLOW
 #define SCROLL_DIVISOR_FAST CONFIG_TRACKPOINT_SCROLL_DIVISOR_FAST
 
+// --- 滚轮基础比例：与移动增益阶梯共用 trackpoint_force_gain，
+//     满力（gain=MOUSE_GAIN_L5）时约等于旧速度表的最大值 0.05 ---
+#define SCROLL_GAIN_BASE 0.0167f
+
 // --- Arrow key threshold / divisor ---
 #define ARROW_DEADZONE CONFIG_TRACKPOINT_SCROLL_DEADZONE
 #define ARROW_INPUT_MAX 256
@@ -375,14 +379,12 @@ static void trackpoint_work_cb(struct k_work *work) {
             data->scroll_residue_y = dy * SCROLL_Y_DIR;
         }
 
-        float speed = sqrtf((float)(dx * dx + dy * dy));
-        float scale = (speed > 80)   ? 0.05f
-                      : (speed > 40) ? 0.04f
-                      : (speed > 20) ? 0.03f
-                      : (speed > 5)  ? 0.02f
-                                     : 0.015f;
-        scroll_residual_x += dx * scale;
-        scroll_residual_y += dy * scale;
+        // ★ 滚轮增益与移动模式一致：使用同一个力度阶梯表（trackpoint_force_gain）
+        float gain_x = trackpoint_force_gain(fabsf((float)dx));
+        float gain_y = trackpoint_force_gain(fabsf((float)dy));
+
+        scroll_residual_x += dx * SCROLL_GAIN_BASE * gain_x;
+        scroll_residual_y += dy * SCROLL_GAIN_BASE * gain_y;
 
         int16_t out_x = (int16_t)scroll_residual_x;
         int16_t out_y = (int16_t)scroll_residual_y;
