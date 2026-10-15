@@ -3,73 +3,73 @@ layers:
   QWERTY: [ESC, '1', '2', '3', '4', '5', MUTE, MUTE, '6', '7', '8', '9', '0', BSPC, TAB, Q, W, E, R, T, Y, U, I, O, P, \, CAPS, A, S, D, F, G, '&mkp LCLK', '&mkp
       LCLK', H, J, K, L, ;, ENTER, LSHFT, Z, X, C, V, B, PG DN, PG UP, '&msc SCRL_DOWN', '&msc SCRL_UP', N, M, ',', ., /, RSHIFT, LCTRL, LGUI, LALT, SPACE, LOWER,
     LOWER, SPACE, '-', '=', '`']
-  LOWER:
+  MOUSE:
   - ESC
-  - F1
-  - F2
-  - F3
-  - F4
-  - F5
+  - '1'
+  - '2'
+  - '3'
+  - '4'
+  - '5'
   - BT CLR
   - MUTE
-  - F6
-  - F7
-  - F8
-  - F9
-  - F10
-  - DEL
+  - '6'
+  - '7'
+  - '8'
+  - '9'
+  - '0'
+  - BSPC
   - TAB
-  - {t: ▽, type: trans}
-  - UP
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - OUT TOG
-  - F11
-  - F12
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - HOME
+  - Q
+  - W
+  - E
+  - R
+  - T
+  - Y
+  - {t: U, h: '&mkp MB3'}
+  - I
+  - O
+  - P
   - \
   - CAPS
-  - LEFT
-  - DOWN
-  - RIGHT
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - '&mkp RCLK'
-  - '&mkp RCLK'
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - ''''
+  - A
+  - S
+  - D
+  - F
+  - G
+  - '&mkp LCLK'
+  - '&mkp LCLK'
+  - H
+  - {t: J, h: '&mkp MB1'}
+  - K
+  - L
+  - ;
   - ENTER
   - LSHFT
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - RGB TOG
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - '&bl BL_DEC'
-  - '&bl BL_INC'
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - '['
-  - ']'
-  - _
-  - +
-  - '&bootloader'
+  - Z
+  - X
+  - C
+  - V
+  - B
+  - '&msc SCRL_DOWN'
+  - '&msc SCRL_UP'
+  - ''
+  - ''
+  - N
+  - {t: M, h: '&mkp MB2'}
+  - ','
+  - .
+  - /
+  - RSHIFT
+  - LCTRL
   - LGUI
   - LALT
   - SPACE
-  - {t: LOWER, type: held}
   - LOWER
-  - SPACE
-  - {t: ▽, type: trans}
-  - .
-  - '&bootloader'
+  - '&mkp MB1'
+  - '&tdRMCLK'
+  - '-'
+  - '='
+  - '`'
   RAISE:
   - ESC
   - F1
@@ -137,72 +137,72 @@ layers:
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
-  MOUSE:
+  LOWER:
   - ESC
-  - '1'
-  - '2'
-  - '3'
-  - '4'
-  - '5'
+  - F1
+  - F2
+  - F3
+  - F4
+  - F5
   - BT CLR
   - MUTE
-  - '6'
-  - '7'
-  - '8'
-  - '9'
-  - '0'
-  - BSPC
+  - F6
+  - F7
+  - F8
+  - F9
+  - F10
+  - DEL
   - TAB
-  - Q
-  - W
-  - E
-  - R
-  - T
-  - Y
-  - {t: U, h: '&mkp MB3'}
-  - I
-  - O
-  - P
+  - {t: ▽, type: trans}
+  - UP
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - OUT TOG
+  - F11
+  - F12
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - HOME
   - \
   - CAPS
-  - A
-  - S
-  - D
-  - F
-  - G
-  - '&mkp LCLK'
-  - '&mkp LCLK'
-  - H
-  - {t: J, h: '&mkp MB1'}
-  - K
-  - L
-  - ;
+  - LEFT
+  - DOWN
+  - RIGHT
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - '&mkp RCLK'
+  - '&mkp RCLK'
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - ''''
   - ENTER
   - LSHFT
-  - Z
-  - X
-  - C
-  - V
-  - B
-  - '&msc SCRL_DOWN'
-  - '&msc SCRL_UP'
-  - ''
-  - ''
-  - N
-  - {t: M, h: '&mkp MB2'}
-  - ','
-  - .
-  - /
-  - RSHIFT
-  - LCTRL
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - RGB TOG
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - '&bl BL_DEC'
+  - '&bl BL_INC'
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - '['
+  - ']'
+  - _
+  - +
+  - '&bootloader'
   - LGUI
   - LALT
   - SPACE
-  - '&mkp MB1'
-  - '&mkp MB1'
-  - '&tdRMCLK'
-  - '-'
-  - '='
-  - '`'
+  - {t: LOWER, type: held}
+  - LOWER
+  - SPACE
+  - {t: ▽, type: trans}
+  - .
+  - '&bootloader'
   RESERVE: ['', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '',
     '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '']
